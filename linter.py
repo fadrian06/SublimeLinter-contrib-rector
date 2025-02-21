@@ -43,6 +43,9 @@ class Rector(ComposerLinter):
                 lines_to_add[file_line].append(filtered_output_line)
 
         for line_number in lines_to_remove.keys():
+            if lines_to_remove[line_number] == '':
+                continue
+
             line_content = lines_to_remove[line_number]
             message = '\n'.join(lines_to_add[line_number])
             col = 0
@@ -55,7 +58,7 @@ class Rector(ComposerLinter):
 
             matches.append(LintMatch({
                 'line': line_number - 1,
-                'message': message,
+                'message': message or 'Delete this line',
                 'col': col,
                 'end_col': len(line_content)
             }))
