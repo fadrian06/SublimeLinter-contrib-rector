@@ -22,6 +22,7 @@ class Rector(ComposerLinter):
         output_lines = output.splitlines()
         lines_to_remove = {}
         lines_to_add = {}
+        file_line = 0
 
         for output_line in output_lines:
             output_first_character = output_line[0:1]
@@ -42,7 +43,6 @@ class Rector(ComposerLinter):
                 lines_to_add[file_line].append(filtered_output_line)
 
         for line_number in lines_to_remove.keys():
-            line_content = lines_to_remove[line_number]
             message = '\n'.join(lines_to_add[line_number])
 
             matches.append(LintMatch({
