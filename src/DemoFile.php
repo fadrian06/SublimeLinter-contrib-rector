@@ -1,5 +1,7 @@
 <?php
 
+namespace SLRector;
+
 final class DemoFile
 {
     public function run(bool $param)
