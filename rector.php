@@ -9,7 +9,7 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
     ])
-    ->withPhpSets(php56: true)
+    ->withPhpSets(php70: true)
     ->withPreparedSets(typeDeclarations: true)
     ->withConfiguredRule(RenameFunctionRector::class, [
         'view' => 'Laravel\Templating\render',
