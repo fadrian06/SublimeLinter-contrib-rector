@@ -28,6 +28,14 @@ class Rector(ComposerLinter):
             output_first_character = output_line[0:1]
             filtered_output_line = output_line[1:]
 
+            if 'declare(strict_types=1);' in output_line:
+                lines_to_add.setdefault(1, [])
+                lines_to_add[1].append(filtered_output_line)
+                continue
+
+            if output_first_character == '+' and len(filtered_output_line) == 0:
+                continue
+
             if (
                 output_first_character != '+'
                 and output_first_character != '-'
@@ -62,5 +70,26 @@ class Rector(ComposerLinter):
                 'col': col,
                 'end_col': len(line_content)
             }))
+        else:
+            for line_number in lines_to_add.keys():
+                if lines_to_add[line_number] == '':
+                    continue
+
+                line_content = lines_to_add[line_number]
+                message = '\n'.join(lines_to_add[line_number])
+                col = 0
+
+                for char in line_content:
+                    if char == ' ' or char == '\t':
+                        col += 1
+                    else:
+                        break
+
+                matches.append(LintMatch({
+                    'line': line_number - 1,
+                    'message': message or 'Add this line',
+                    'col': col,
+                    'end_col': len(line_content)
+                }))
 
         return iter(matches)
