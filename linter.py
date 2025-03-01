@@ -1,6 +1,6 @@
 from typing import Iterator
 
-from sublime import Region, enum
+from sublime import Region
 
 from SublimeLinter.lint import ComposerLinter
 from SublimeLinter.lint.linter import LintMatch
