@@ -29,17 +29,13 @@ class Rector(ComposerLinter):
             filtered_output_line = output_line[1:]
 
             if 'declare(strict_types=1);' in output_line:
-                lines_to_add.setdefault(1, [])
-                lines_to_add[1].append(filtered_output_line)
+                lines_to_add.setdefault(1, []).append(filtered_output_line)
                 continue
 
-            if output_first_character == '+' and len(filtered_output_line) == 0:
+            if output_first_character == '+' and not filtered_output_line:
                 continue
 
-            if (
-                output_first_character != '+'
-                and output_first_character != '-'
-            ):
+            if output_first_character not in ('+', '-'):
                 continue
 
             if output_first_character == '-':
