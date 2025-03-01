@@ -45,6 +45,9 @@ node_modules/*
 SublimeLinter/*
 
 # Composer #
-#################
+############
 vendor/*
 
+# SublimeText #
+###############
+*.sublime-*
