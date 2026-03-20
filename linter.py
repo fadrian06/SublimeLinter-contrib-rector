@@ -1,3 +1,4 @@
+import re
 from typing import Iterator
 
 from sublime import Region
@@ -7,7 +8,8 @@ from SublimeLinter.lint.linter import LintMatch
 
 
 class Rector(ComposerLinter):
-    cmd = 'rector process ${file} --dry-run --no-progress-bar ${args}'
+    # Redirigir stderr a null para ignorar advertencias de PHP
+    cmd = 'rector process ${file} --dry-run --no-progress-bar ${args} 2>nul'
 
     defaults = {
         'selector': 'embedding.php'
@@ -25,7 +27,14 @@ class Rector(ComposerLinter):
         current_line = 0
         in_diff = False
 
+        # Patrón para identificar líneas que definitivamente son parte del diff
+        diff_pattern = re.compile(r'^[+-@ ].*$')
+
         for output_line in output_lines:
+            # Si la línea no parece parte de un diff, la ignoramos completamente
+            if not diff_pattern.match(output_line):
+                continue
+
             # Detectar cuando empezamos un bloque diff
             if output_line.startswith('@@'):
                 in_diff = True
